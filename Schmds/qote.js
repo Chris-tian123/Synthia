@@ -16,6 +16,7 @@ module.exports = {
       allowedMentions: {
         repliedUser: false,
       },
+      ephemeral: true,
       flags: [4096],
     });
 

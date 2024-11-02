@@ -15,6 +15,7 @@ module.exports = {
       allowedMentions: {
         repliedUser: false,
       },
+      ephemeral: true,
       flags: [4096],
     });
 
@@ -65,9 +66,9 @@ module.exports = {
         }
       )
       .setFooter({ text: 'Have questions? Reach out to Pella.app support anytime!' })
-      .setThumbnail('https://images-ext-1.discordapp.net/external/kbQMDePCWJLgpXqzDh2wjTGcH6gmxizLpBMLAwPscQo/https/cdn.discordapp.com/icons/1239329064842432562/da5e8b8e3b9ed106626e9c7d525e04a8.webp?format=webp&width=115&height=115'); // Placeholder for logo
+      .setThumbnail('https://images-ext-1.discordapp.net/external/kbQMDePCWJLgpXqzDh2wjTGcH6gmxizLpBMLAwPscQo/https/cdn.discordapp.com/icons/1239329064842432562/da5e8b8e3b9ed106626e9c7d525e04a8.webp?format=webp&width=115&height=115'); 
 
-    // Reply to the interaction with the embed and button, ephemeral for only the user to see
-    await interaction.reply({ embeds: [embed], components: [actionRow], ephemeral: true });
+
+    await interaction.editReply({ embeds: [embed], components: [actionRow], ephemeral: true });
   }
 };

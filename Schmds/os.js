@@ -16,6 +16,7 @@ module.exports = {
         allowedMentions: {
           repliedUser: false,
         },
+      ephemeral: true,
         flags: [4096],
       });
 
@@ -45,11 +46,13 @@ module.exports = {
       // Send the OS information message as a reply
       await interaction.editReply({
         content: osInfoMessage,
+      ephemeral: true,
       });
     } catch (error) {
       console.error("Error fetching OS info:", error);
       await interaction.editReply({
         content: 'Sorry, there was an issue fetching the OS information.',
+      ephemeral: true,
       });
     }
   },

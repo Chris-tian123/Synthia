@@ -16,7 +16,14 @@ module.exports = {
   },
 
   async execute(interaction) {
-    await interaction.deferReply();
+
+    await interaction.deferReply({
+      allowedMentions: {
+        repliedUser: false,
+      },
+      ephemeral: true,
+      flags: [4096],
+    });
 
     const content = interaction.options.getString("content");
 
@@ -30,10 +37,10 @@ module.exports = {
         .setDescription("Here is your QR code:")
         .setImage(qrCodeUrl);
 
-      await interaction.editReply({ embeds: [embed] });
+      await interaction.editReply({ embeds: [embed], ephemeral: true });
     } catch (error) {
       console.error("Error generating QR code:", error);
-      await interaction.editReply("There was an issue generating the QR code. Please try again later.");
+      await interaction.editReply({content: "There was an issue generating the QR code. Please try again later.", ephemeral: true});
     }
   },
 };

@@ -26,7 +26,13 @@ module.exports = {
   },
 
   async execute(interaction) {
-    await interaction.deferReply();
+        await interaction.deferReply({
+            allowedMentions: {
+                repliedUser: false,
+            },
+      ephemeral: true,
+            flags: [4096],
+        });
 
     const category = interaction.options.getString('category');
     try {
@@ -45,7 +51,7 @@ module.exports = {
         .setTitle(meme.title)
         .setImage(meme.url);
 
-      await interaction.editReply({ embeds: [embed] });
+      await interaction.editReply({ embeds: [embed], ephemeral: true });
     } catch (error) {
       console.error('Error fetching meme:', error);
       await interaction.editReply('There was an error fetching the meme. Please try again later.');

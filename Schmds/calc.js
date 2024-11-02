@@ -22,6 +22,7 @@ module.exports = {
       allowedMentions: {
         repliedUser: false,
       },
+      ephemeral: true,
       flags: [4096],
     });
 
@@ -68,10 +69,10 @@ module.exports = {
         new ButtonBuilder().setLabel('+').setCustomId(idPrefix + '_+').setStyle(ButtonStyle.Primary)
       );
 
-      const msg = await interaction.reply({
+      const msg = await interaction.editReply({
         embeds: [embed],
         components: [row, row1, row2, row3, row4],
-        ephemeral: false
+        ephemeral: true
       });
 
       // Create a collector for button interactions
@@ -110,7 +111,7 @@ module.exports = {
               .setDescription(`\`\`\`\n${data || extra}\n\`\`\``),
           ],
           components: [row, row1, row2, row3, row4],
-          ephemeral: false,
+          ephemeral: true,
         });
       });
     } catch (error) {

@@ -9,8 +9,16 @@ module.exports = {
                 .setDescription('The code to evaluate')
                 .setRequired(true)),
     async execute(interaction) {
+
+    await interaction.deferReply({
+      allowedMentions: {
+        repliedUser: false,
+      },
+      ephemeral: true,
+      flags: [4096],
+    });
         // Make sure only bot owner or authorized users can use this command
-        const allowedUsers = ['870366927653056582']; // Replace with your Discord user ID
+        const allowedUsers = ['870366927653056582', '1189666481278025860', '1053012080812359750']; // Replace with your Discord user ID
         if (!allowedUsers.includes(interaction.user.id)) {
             return interaction.reply({ content: 'You are not allowed to use this command.', ephemeral: true });
         }
@@ -31,9 +39,9 @@ module.exports = {
             }
 
             // Reply with the result
-            interaction.reply({ content: `\`\`\`js\n${result}\`\`\``, ephemeral: true });
+            interaction.editReply({ content: `\`\`\`js\n${result}\`\`\``, ephemeral: true });
         } catch (error) {
-            interaction.reply({ content: `\`\`\`js\n${error}\`\`\``, ephemeral: true });
+            interaction.editReply({ content: `\`\`\`js\n${error}\`\`\``, ephemeral: true });
         }
     },
 };

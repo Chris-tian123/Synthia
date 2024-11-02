@@ -15,6 +15,7 @@ module.exports = {
       allowedMentions: {
         repliedUser: false,
       },
+      ephemeral: true,
       flags: [4096],
     });
 
@@ -22,6 +23,7 @@ module.exports = {
     const sent = await interaction.editReply({
       content: "🏓 Pinging...",
       fetchReply: true,
+      ephemeral: true,
     });
 
     interaction.editReply({
@@ -29,6 +31,7 @@ module.exports = {
         interaction.client.ws.ping
       }ms.`,
       fetchReply: true,
+      ephemeral: true,
     });
   } catch (error) {
     console.error("Error handling interaction:", error);

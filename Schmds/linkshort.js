@@ -23,7 +23,15 @@ module.exports = {
   },
 
   async execute(interaction) {
-    await interaction.deferReply();
+
+    await interaction.deferReply({
+      allowedMentions: {
+        repliedUser: false,
+      },
+      flags: [4096],
+      ephemeral: true,
+    });
+
 
     const url = interaction.options.getString("link");
     const shortCode = interaction.options.getString("shorten-code");
@@ -56,10 +64,10 @@ module.exports = {
           { name: "Shortened URL", value: shortenedUrl }
         );
 
-      await interaction.editReply({ embeds: [embed] });
+      await interaction.editReply({ embeds: [embed], ephemeral: true });
     } catch (error) {
       console.error("Error shortening URL:", error);
-      await interaction.editReply("There was an issue with shortening the URL. Please try again later.");
+      await interaction.editReply({content: "There was an issue with shortening the URL. Please try again later.", ephemeral: true});
     }
   },
 };

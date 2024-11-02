@@ -24,6 +24,7 @@ module.exports = {
       allowedMentions: {
         repliedUser: false,
       },
+      ephemeral: true,
       flags: [4096],
     });
 
@@ -47,7 +48,7 @@ module.exports = {
         .setColor('Green')
         .setDescription(responseText);
 
-      await interaction.send({ embeds: [embed] });
+      await interaction.editReply({ embeds: [embed] , ephemeral: true});
     } catch (error) {
       console.error('Error with AI:', error);
     }

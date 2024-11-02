@@ -15,7 +15,13 @@ module.exports = {
   },
 
   async execute(interaction) {
-    await interaction.deferReply();
+        await interaction.deferReply({
+            allowedMentions: {
+                repliedUser: false,
+            },
+      ephemeral: true,
+            flags: [4096],
+        });
 
     // Get the number of sides from the options or set default to 6
     const sides = interaction.options.getInteger("sides") || 6;
@@ -29,6 +35,6 @@ module.exports = {
       .setTitle("🎲 Dice Roll")
       .setDescription(`You rolled a **${rollResult}** on a **${sides}-sided** dice!`);
 
-    await interaction.editReply({ embeds: [embed] });
+    await interaction.editReply({ embeds: [embed] , ephemeral: true});
   },
 };

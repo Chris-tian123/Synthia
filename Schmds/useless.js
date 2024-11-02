@@ -11,8 +11,14 @@ module.exports = {
   },
 
   async execute(interaction) {
-    await interaction.deferReply();
 
+    await interaction.deferReply({
+      allowedMentions: {
+        repliedUser: false,
+      },
+      ephemeral: true,
+      flags: [4096],
+    });
     try {
       // Fetch a random useless fact from the Useless Facts API
       const response = await axios.get("https://uselessfacts.jsph.pl/random.json?language=en");
@@ -25,10 +31,10 @@ module.exports = {
         .setDescription(fact)
         .setFooter({ text: "The most useless fact you'll learn today!" });
 
-      await interaction.editReply({ embeds: [embed] });
+      await interaction.editReply({ embeds: [embed] , ephemeral: true});
     } catch (error) {
       console.error("Error fetching useless fact:", error);
-      await interaction.editReply("Couldn't fetch a useless fact at the moment. Try again later.");
+      await interaction.editReply({content: "Couldn't fetch a useless fact at the moment. Try again later.", ephemeral: true});
     }
   },
 };
