@@ -68,7 +68,7 @@ const rest = new REST({ version: '9' }).setToken('MTA2MDU3NzQxMTgwNjI2OTQ2MQ.GRc
 
 // Event: Ready
 client.once('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!` .cyan);
+  console.log(`Logged in as ${client.user.tag}! Now it's ready!` .cyan);
 });
 
 // Event: Interaction Create (slash command execution)
