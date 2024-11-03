@@ -1,4 +1,4 @@
-/**
+
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { ActionRowBuilder, ButtonBuilder, EmbedBuilder } = require('discord.js');
 const axios = require('axios');
@@ -17,7 +17,7 @@ module.exports = {
       ephemeral: true,
       flags: [4096],
     });
-        try {
+        try {/**
             // Fetch the question from the external API
             const response = await axios.get('https://example.com/api/would-you-rather'); // Replace with your actual API endpoint
             const randomQuestion = response.data; // Assuming the response structure matches
@@ -114,11 +114,11 @@ module.exports = {
                     interaction.editReply({ embeds: [embed], components: [row], ephemeral: true });
                 }
             });
-
+/*/
+          await interaction.editReply({content: "Not finished", ephemeral: true})
         } catch (error) {
             console.error('Error fetching question:', error);
             await interaction.reply({content: 'There was an error fetching the question. Please try again later.', ephemeral: true});
         }
     },
 };
-/*/
