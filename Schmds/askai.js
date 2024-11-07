@@ -1,56 +1,102 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const Groq = require('groq-sdk');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 // Initialize the Groq client
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+const groq = new Groq({ apiKey: "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" });
+// Initialize GoogleGenerativeAI client
+const genAI = new GoogleGenerativeAI( "AIzaSyBUkSjeYDmT5lnaXWUh9s1OYakzjnXlmh4" );
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
 module.exports = {
-  data: {
-    ...new SlashCommandBuilder()
-      .setName('ask-ai')
-      .setDescription('Ask the AI a question using GROQ API')
-      .addStringOption((option) =>
-        option
-          .setName('question')
-          .setDescription('What do you want to ask the AI?')
-          .setRequired(true)
-      ),
-    integration_types: [1],
-    contexts: [0, 1, 2],
-  },
+  data: new SlashCommandBuilder()
+    .setName('ask-ai')
+    .setDescription('Ask the AI a question using Groq or Google Gemini')
+    .addStringOption((option) =>
+      option
+        .setName('question')
+        .setDescription('What do you want to ask the AI?')
+        .setRequired(true)
+    )
+    .addStringOption((option) =>
+      option
+        .setName('model')
+        .setDescription('Choose the AI model to use')
+        .setRequired(true)
+        .addChoices(
+          { name: 'Llama3-8b-8192', value: 'llama3-8b-8192' },
+          { name: 'Gemma-7b-it', value: 'gemma-7b-it' },
+          { name: 'Mixtral-8x7b-32768', value: 'mixtral-8x7b-32768' },
+          { name: 'Whisper-large-v3-turbo', value: 'whisper-large-v3-turbo' },
+          { name: 'Gemini-1.5-flash', value: 'gemini' }
+        )
+    ),
 
   async execute(interaction) {
-    await interaction.deferReply({
-      allowedMentions: {
-        repliedUser: false,
-      },
-      ephemeral: true,
-      flags: [4096],
-    });
+    await interaction.deferReply({ ephemeral: true });
 
-    const { options } = interaction;
-    const question = options.getString('question');
+    const question = interaction.options.getString('question');
+    const selectedModel = interaction.options.getString('model');
 
     try {
-      // Create the chat completion request
-      const chatCompletion = await groq.chat.completions.create({
-        messages: [
-          { role: 'system', content: 'Provide a brief response.' }, // Instruction for brevity
-          { role: 'user', content: question },
-        ],
-        model: 'llama3-8b-8192',
-      });
+      let responseText;
 
-      const responseText = chatCompletion.choices[0]?.message?.content || 'No response from AI.';
+      if (selectedModel === 'llama3-8b-8192') {
+        // Groq AI response
+        const chatCompletion = await groq.chat.completions.create({
+          messages: [
+            { role: 'system', content: 'Provide a brief response.' },
+            { role: 'user', content: question },
+          ],
+          model: 'llama3-8b-8192',
+        });
+        responseText = chatCompletion.choices[0]?.message?.content || 'No response from Groq AI.';
+      } else if (selectedModel === 'gemini') {
+        // Google Gemini AI response
+        const geminiResponse = await model.generateContent({ prompt: question });
+        responseText = geminiResponse?.text || 'No response from Google Gemini.';
+      } else if (selectedModel === 'gemma-7b-it') {
+        // Groq AI response
+        const chatCompletion = await groq.chat.completions.create({
+          messages: [
+            { role: 'system', content: 'Provide a brief response.' },
+            { role: 'user', content: question },
+          ],
+          model: 'gemma-7b-it',
+        });
+        responseText = chatCompletion.choices[0]?.message?.content || 'No response from Groq AI.';
+      } else if (selectedModel === 'mixtral-8x7b-32768') {
+        // Groq AI response
+        const chatCompletion = await groq.chat.completions.create({
+          messages: [
+            { role: 'system', content: 'Provide a brief response.' },
+            { role: 'user', content: question },
+          ],
+          model: 'mixtral-8x7b-32768',
+        });
+        responseText = chatCompletion.choices[0]?.message?.content || 'No response from Groq AI.';
+      } else if (selectedModel === 'whisper-large-v3-turbo') {
+        // Groq AI response
+        const chatCompletion = await groq.chat.completions.create({
+          messages: [
+            { role: 'system', content: 'Provide a brief response.' },
+            { role: 'user', content: question },
+          ],
+          model: 'whisper-large-v3-turbo',
+        });
+        responseText = chatCompletion.choices[0]?.message?.content || 'No response from Groq AI.';
 
       // Create the embed for the response
       const embed = new EmbedBuilder()
         .setColor('Green')
         .setDescription(responseText);
 
-      await interaction.editReply({ embeds: [embed] , ephemeral: true});
+      await interaction.editReply({ embeds: [embed] });
     } catch (error) {
       console.error('Error with AI:', error);
+      await interaction.editReply({
+        content: 'There was an error processing your request. Please try again later.',
+      });
     }
   },
 };
