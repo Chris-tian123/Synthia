@@ -1,5 +1,5 @@
 {
-  "name": "weeh",
+  "name": "synthia",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,7 @@
     "canvas": "^2.11.2",
     "canvacord": "^6.0.0",
     "canvafy": "^7.1.0",
-    "colors": "^1.4.0"
+    "colors": "^1.4.0",
+    "@google/generative-ai": "*"
   }
 }
