@@ -52,9 +52,9 @@ module.exports = {
         responseText = chatCompletion.choices[0]?.message?.content || 'No response from Groq AI.';
       } else if (selectedModel === 'gemini') {
         // Google Gemini AI response
-        const geminiResponse = await genAI.generateText({ prompt: question });
+        const geminiResponse = await model.generateText({ prompt: question });
         responseText = geminiResponse?.candidates[0]?.output || 'No response from Google Gemini.';
-      }
+      };
 
       // Create the embed for the response
       const embed = new EmbedBuilder()
