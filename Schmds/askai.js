@@ -85,7 +85,7 @@ module.exports = {
           model: 'whisper-large-v3-turbo',
         });
         responseText = chatCompletion.choices[0]?.message?.content || 'No response from Groq AI.';
-
+      };
       // Create the embed for the response
       const embed = new EmbedBuilder()
         .setColor('Green')
