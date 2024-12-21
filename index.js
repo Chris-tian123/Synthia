@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const { ApplicationCommandType } = require('discord-api-types/v10');
 const colors = require('colors');
 
-// Initialize the bot client
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -13,7 +12,7 @@ const client = new Client({
         GatewayIntentBits.MessageContent,
     ],
 });
-client.login('MTA2MDU3NzQxMTgwNjI2OTQ2MQ.GRc2PG.xR7sfhz1MxvFpEiGN6XwGIfmIVkklTpLXXgCgQ');
+client.login('Token');
         client.on('ready', (c) => {
         setInterval(() => {
 
@@ -31,13 +30,10 @@ client.login('MTA2MDU3NzQxMTgwNjI2OTQ2MQ.GRc2PG.xR7sfhz1MxvFpEiGN6XwGIfmIVkklTpL
     })
 
 
-// Create a collection to store commands
 client.commands = new Collection();
 
-// Load command files from Schmds folder
 const commandFiles = fs.readdirSync('./Schmds').filter(file => file.endsWith('.js'));
 
-// Register commands from files
 const commands = [];
 for (const file of commandFiles) {
   const command = require(`./Schmds/${file}`);
@@ -45,18 +41,16 @@ for (const file of commandFiles) {
   commands.push(command.data);
 }
 
-// Deploy the commands to Discord globally
-const rest = new REST({ version: '9' }).setToken('MTA2MDU3NzQxMTgwNjI2OTQ2MQ.GRc2PG.xR7sfhz1MxvFpEiGN6XwGIfmIVkklTpLXXgCgQ');
+const rest = new REST({ version: '9' }).setToken('Token');
 
 (async () => {
   try {
     console.log('Started refreshing global application (/) commands.' .yellow);
 
-    const CLIENT_ID = '1060577411806269461';  // Your bot's client ID
+    const CLIENT_ID = 'Bot_Client_ID'; 
 
-    // Deploy globally
     await rest.put(
-      Routes.applicationCommands(CLIENT_ID),  // Register commands globally
+      Routes.applicationCommands(CLIENT_ID), 
       { body: commands },
     );
 
@@ -66,12 +60,10 @@ const rest = new REST({ version: '9' }).setToken('MTA2MDU3NzQxMTgwNjI2OTQ2MQ.GRc
   }
 })();
 
-// Event: Ready
 client.once('ready', () => {
   console.log(`Logged in as ${client.user.tag}! Now it's ready!` .cyan);
 });
 
-// Event: Interaction Create (slash command execution)
 client.on('interactionCreate', async interaction => {
   if (!interaction.isCommand()) return;
 
@@ -85,6 +77,3 @@ client.on('interactionCreate', async interaction => {
     await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
   }
 });
-
-// Message event listener
-// Log in to Discord
